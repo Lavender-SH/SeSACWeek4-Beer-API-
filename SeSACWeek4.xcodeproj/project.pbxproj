@@ -13,6 +13,10 @@
 		0285B2D82A809682005B7C1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0285B2D62A809682005B7C1D /* Main.storyboard */; };
 		0285B2DA2A809683005B7C1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0285B2D92A809683005B7C1D /* Assets.xcassets */; };
 		0285B2DD2A809683005B7C1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0285B2DB2A809683005B7C1D /* LaunchScreen.storyboard */; };
+		0285B2E62A8096C6005B7C1D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0285B2E52A8096C6005B7C1D /* Alamofire */; };
+		0285B2E92A8096D3005B7C1D /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0285B2E82A8096D3005B7C1D /* SwiftyJSON */; };
+		0285B2EC2A8096EF005B7C1D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0285B2EB2A8096EF005B7C1D /* Kingfisher */; };
+		0285B2EE2A809B91005B7C1D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0285B2ED2A809B91005B7C1D /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,7 @@
 		0285B2D92A809683005B7C1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0285B2DC2A809683005B7C1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0285B2DE2A809683005B7C1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0285B2ED2A809B91005B7C1D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +36,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0285B2EC2A8096EF005B7C1D /* Kingfisher in Frameworks */,
+				0285B2E92A8096D3005B7C1D /* SwiftyJSON in Frameworks */,
+				0285B2E62A8096C6005B7C1D /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +67,7 @@
 				0285B2D02A809682005B7C1D /* AppDelegate.swift */,
 				0285B2D22A809682005B7C1D /* SceneDelegate.swift */,
 				0285B2D42A809682005B7C1D /* ViewController.swift */,
+				0285B2ED2A809B91005B7C1D /* .gitignore */,
 				0285B2D62A809682005B7C1D /* Main.storyboard */,
 				0285B2D92A809683005B7C1D /* Assets.xcassets */,
 				0285B2DB2A809683005B7C1D /* LaunchScreen.storyboard */,
@@ -83,6 +92,11 @@
 			dependencies = (
 			);
 			name = SeSACWeek4;
+			packageProductDependencies = (
+				0285B2E52A8096C6005B7C1D /* Alamofire */,
+				0285B2E82A8096D3005B7C1D /* SwiftyJSON */,
+				0285B2EB2A8096EF005B7C1D /* Kingfisher */,
+			);
 			productName = SeSACWeek4;
 			productReference = 0285B2CD2A809682005B7C1D /* SeSACWeek4.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +125,11 @@
 				Base,
 			);
 			mainGroup = 0285B2C42A809682005B7C1D;
+			packageReferences = (
+				0285B2E42A8096C6005B7C1D /* XCRemoteSwiftPackageReference "Alamofire" */,
+				0285B2E72A8096D3005B7C1D /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				0285B2EA2A8096EF005B7C1D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 0285B2CE2A809682005B7C1D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -125,6 +144,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0285B2EE2A809B91005B7C1D /* .gitignore in Resources */,
 				0285B2DD2A809683005B7C1D /* LaunchScreen.storyboard in Resources */,
 				0285B2DA2A809683005B7C1D /* Assets.xcassets in Resources */,
 				0285B2D82A809682005B7C1D /* Main.storyboard in Resources */,
@@ -295,6 +315,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,9 +323,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lavender.sesac.SeSACWeek4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -323,6 +347,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,9 +355,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lavender.sesac.SeSACWeek4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -358,6 +386,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0285B2E42A8096C6005B7C1D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		0285B2E72A8096D3005B7C1D /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		0285B2EA2A8096EF005B7C1D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0285B2E52A8096C6005B7C1D /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0285B2E42A8096C6005B7C1D /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		0285B2E82A8096D3005B7C1D /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0285B2E72A8096D3005B7C1D /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		0285B2EB2A8096EF005B7C1D /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0285B2EA2A8096EF005B7C1D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0285B2C52A809682005B7C1D /* Project object */;
 }
