@@ -344,6 +344,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TIN-jV-wmq">
+                                <rect key="frame" x="20" y="203" width="353" height="90"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="M2S-nW-jLV"/>
+                                </constraints>
+                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mv9-eq-7Dx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -351,6 +358,7 @@
                             <constraint firstItem="cgh-Cq-7Wa" firstAttribute="top" secondItem="mv9-eq-7Dx" secondAttribute="top" constant="20" id="7Pn-Pg-0I0"/>
                             <constraint firstItem="9Rp-f8-Sqq" firstAttribute="leading" secondItem="mv9-eq-7Dx" secondAttribute="leading" constant="20" id="8aT-PS-fc8"/>
                             <constraint firstItem="mv9-eq-7Dx" firstAttribute="trailing" secondItem="adl-RG-rkp" secondAttribute="trailing" constant="100" id="ENL-MF-qNL"/>
+                            <constraint firstItem="mv9-eq-7Dx" firstAttribute="trailing" secondItem="TIN-jV-wmq" secondAttribute="trailing" constant="20" id="G7E-iA-kZJ"/>
                             <constraint firstItem="mv9-eq-7Dx" firstAttribute="trailing" secondItem="cgh-Cq-7Wa" secondAttribute="trailing" constant="20" id="HJ9-Oh-0qJ"/>
                             <constraint firstItem="9Rp-f8-Sqq" firstAttribute="top" secondItem="cgh-Cq-7Wa" secondAttribute="bottom" constant="44" id="NAr-UX-9g1"/>
                             <constraint firstItem="OK8-AY-907" firstAttribute="top" secondItem="9Rp-f8-Sqq" secondAttribute="bottom" constant="48" id="NYt-22-tOR"/>
@@ -359,6 +367,8 @@
                             <constraint firstItem="cgh-Cq-7Wa" firstAttribute="leading" secondItem="mv9-eq-7Dx" secondAttribute="leading" constant="20" id="ceT-Ln-Mn3"/>
                             <constraint firstItem="adl-RG-rkp" firstAttribute="leading" secondItem="mv9-eq-7Dx" secondAttribute="leading" constant="100" id="d1g-ai-XiR"/>
                             <constraint firstItem="OK8-AY-907" firstAttribute="top" secondItem="9Rp-f8-Sqq" secondAttribute="bottom" constant="48" id="f2j-2J-dVH"/>
+                            <constraint firstItem="9Rp-f8-Sqq" firstAttribute="top" secondItem="TIN-jV-wmq" secondAttribute="bottom" constant="44" id="jjX-iu-5Z6"/>
+                            <constraint firstItem="TIN-jV-wmq" firstAttribute="leading" secondItem="mv9-eq-7Dx" secondAttribute="leading" constant="20" id="m4U-Pj-gx4"/>
                             <constraint firstItem="mv9-eq-7Dx" firstAttribute="trailing" secondItem="OK8-AY-907" secondAttribute="trailing" constant="20" id="sUI-6N-8c5"/>
                             <constraint firstItem="9Rp-f8-Sqq" firstAttribute="top" secondItem="cgh-Cq-7Wa" secondAttribute="bottom" constant="44" id="vBE-NB-nG8"/>
                             <constraint firstItem="mv9-eq-7Dx" firstAttribute="trailing" secondItem="9Rp-f8-Sqq" secondAttribute="trailing" constant="20" id="vce-sW-4X2"/>
@@ -368,6 +378,7 @@
                     <connections>
                         <outlet property="langCodeLabel" destination="adl-RG-rkp" id="GYE-tQ-68B"/>
                         <outlet property="originalTextView" destination="cgh-Cq-7Wa" id="rXN-8i-jt5"/>
+                        <outlet property="pickerView" destination="TIN-jV-wmq" id="iQI-Gs-KnS"/>
                         <outlet property="requestButton" destination="9Rp-f8-Sqq" id="gLs-w7-RdJ"/>
                         <outlet property="translateTextView" destination="OK8-AY-907" id="Ye8-rl-UH1"/>
                     </connections>

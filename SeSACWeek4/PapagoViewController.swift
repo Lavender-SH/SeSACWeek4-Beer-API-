@@ -15,6 +15,12 @@ class PapagoViewController: UIViewController {
     @IBOutlet weak var translateTextView: UITextView!
     @IBOutlet weak var requestButton: UIButton!
     @IBOutlet weak var langCodeLabel: UILabel!
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    
+    let sourceLanguages = ["ko", "en", "ja"]
+    let targetLanguages = ["en", "ja", "fr"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,15 +28,22 @@ class PapagoViewController: UIViewController {
         originalTextView.text = ""
         translateTextView.text = ""
         translateTextView.isEditable = false
+        
+        pickerView.delegate = self
+        pickerView.dataSource = self
 
     }
     
+    
     @IBAction func requestButtonClicked(_ sender: UIButton) {
+        //번역기 기능
         let url = "https://openapi.naver.com/v1/papago/n2mt"
         let header: HTTPHeaders = ["X-Naver-Client-Id": "gr8TalCevSearBnPjsYj", "X-Naver-Client-Secret": "GQfnEYG67q"]
+        let sourceLanguage = sourceLanguages[pickerView.selectedRow(inComponent: 0)]
+        let targetLanguage = targetLanguages[pickerView.selectedRow(inComponent: 1)]
         let parameters = [
-            "source": "ko",
-            "target": "en",
+            "source": sourceLanguage,
+            "target": targetLanguage,
             "text": originalTextView.text ?? ""
         ]
         
@@ -47,6 +60,7 @@ class PapagoViewController: UIViewController {
             }
         }
         
+        //언어감지 기능
         let langDetectionURL = "https://openapi.naver.com/v1/papago/detectLangs"
         let langDetectionHeader: HTTPHeaders = ["X-Naver-Client-Id": "J6WmDBqkZmdxNqqXVBdX", "X-Naver-Client-Secret": "JUxmM8Smam"]
         let langDetectionParameters = ["query": originalTextView.text ?? ""]
@@ -66,4 +80,20 @@ class PapagoViewController: UIViewController {
         }
     }
 }
+
+//피커뷰 프로토콜 정의
+extension PapagoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return component == 0 ? sourceLanguages.count : targetLanguages.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return component == 0 ? sourceLanguages[row] : targetLanguages[row]
+    }
+}
+
 
