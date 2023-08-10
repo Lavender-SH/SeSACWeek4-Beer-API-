@@ -16,21 +16,28 @@ struct Movie {
 
 class ViewController: UIViewController {
     
+    
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var movieTableView: UITableView!
     var movieList: [Movie] = []
     
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         movieTableView.rowHeight = 60
         movieTableView.dataSource = self
         movieTableView.delegate = self
-        callRequest()
+        indicatorView.isHidden = true
+        //callRequest(date: <#String#>)
         
         
     }
-    func callRequest() {
-        let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=\(APIKey.boxOfficeKey)&targetDt=20120101"
+    func callRequest(date: String) {
+        indicatorView.isHidden = false
+        indicatorView.startAnimating()
+        let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=\(APIKey.boxOfficeKey)&targetDt=\(date)"
         AF.request(url, method: .get).validate().responseJSON { response in
             switch response.result {
                 
@@ -54,6 +61,8 @@ class ViewController: UIViewController {
                     let data = Movie(title: movieNm, release: openDt)
                     self.movieList.append(data)
                 }
+                self.indicatorView.stopAnimating()
+                self.indicatorView.isHidden = true
                 self.movieTableView.reloadData()
                 
             case .failure(let error):
@@ -80,3 +89,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        callRequest(date: searchBar.text!)
+    }
+}
