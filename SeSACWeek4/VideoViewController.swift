@@ -9,19 +9,43 @@ import Alamofire
 import SwiftyJSON
 import Kingfisher
 
-struct Video {
+// MARK: - Welcome
+struct Video: Codable {
+    let documents: [Document]
+//    let ds, g: [JSONAny]
+//    let m: M
+//    let meta: Meta
+}
+
+// MARK: - Document
+struct Document: Codable {
     let author: String
     let datetime: String
-    let time: Int
+    let playTime: Int
     let thumbnail: String
     let title: String
-    let link: String
-    
-    var contents: String {
-        
-            return "\(author) | \(time)초\n\(datetime)"
-        }
+    let url: String
+
+    enum CodingKeys: String, CodingKey {
+        case author, datetime
+        case playTime = "play_time"
+        case thumbnail, title, url
     }
+}
+
+//struct Video: Codable {
+//    let author: String
+//    let datetime: String
+//    let time: Int
+//    let thumbnail: String
+//    let title: String
+//    let link: String
+//
+//    var contents: String {
+//
+//            return "\(author) | \(time)초\n\(datetime)"
+//        }
+//    }
 
 
 class VideoViewController: UIViewController {
@@ -41,58 +65,37 @@ class VideoViewController: UIViewController {
         videoTableView.prefetchDataSource = self
         
         searchBar.delegate = self
-//        callRequest(query: "강아지", page: 1)
+        callRequest(query: "강아지", page: 1)
     }
     func callRequest(query: String, page: Int) {
         
-        let text = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let text = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        guard let text else { return }
         let url = "https://dapi.kakao.com/v2/search/vclip?query=\(text)&size=30&page=\(page)"
         let header: HTTPHeaders = ["Authorization": "KakaoAK df79323b47aec35f08533de4cce84ee7"]
-        
         print(url)
         
-        //afeb92145464v7421499bdc8fd7417c4
-        AF.request(url, method: .get, headers: header).validate(statusCode:  200...500).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-//                print("JSON: \(json)")
-//                print(response.response?.headers)
-//                print(response.response?.statusCode)
-                
-                let statusCode = response.response?.statusCode ?? 500
-                if statusCode == 200 {
-                    
-                    self.isEnd = json["meta"]["is_end"].boolValue
-                    
-                    for item in json["documents"].arrayValue {
-                        let author = item["author"].stringValue
-                        let date = item["datetime"].stringValue
-                        let time = item["play_time"].intValue
-                        let thumbnail = item["thumbnail"].stringValue
-                        let title = item["title"].stringValue
-                        let link = item["url"].stringValue
-                        
-                        let data = Video(author: author, datetime: date, time: time, thumbnail: thumbnail, title: title, link: link)
-                        self.videoList.append(data)
-                    }
-                    print(self.videoList)
-                    self.videoTableView.reloadData()
-                }
-                else {
-                    print("문제가 발생했어요. 잠시 후 다시 시도해주세요!!")
-                }
-                
-                
-            case .failure(let error):
-                print(error)
+        //        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { response, err in
+        //            if let err = err {
+        //                print(err.localizedDescription)
+        //            }
+        //            guard let value = response.value else { return }
+        //            print("responseDecodable:", value)
+        //
+        //        }
+    
+        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { result in
+            if let err = result.error {
+                print(err.localizedDescription)
+            } else {
+                print(result.value)
             }
+            
         }
-        
     }
     
-    
 }
+
 
 extension VideoViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -111,11 +114,11 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoTableViewCell") as? VideoTableViewCell else { return UITableViewCell() }
-        cell.titleLabel.text = videoList[indexPath.row].title
-        cell.contentLabel.text = videoList[indexPath.row].contents
-        if let url = URL(string: videoList[indexPath.row].thumbnail) {
-            cell.thumbnailImageView.kf.setImage(with: url)
-        }
+//        cell.titleLabel.text = videoList[indexPath.row].title
+//        cell.contentLabel.text = videoList[indexPath.row].contents
+//        if let url = URL(string: videoList[indexPath.row].thumbnail) {
+            //cell.thumbnailImageView.kf.setImage(with: url)
+        //}
         return cell
     }
     //셀이 화면에 보이기 직전에 필요한 리소스를 미리 다운 받는 기능
@@ -139,3 +142,47 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
     }
 }
 
+
+
+
+
+
+//        KakaoAPIManager.shared.callRequest(type: .video, query: query) { json in
+//            print("=======\(json)")
+        //afeb92145464v7421499bdc8fd7417c4
+//        AF.request(url, method: .get, headers: header).validate(statusCode:  200...500).responseJSON { response in
+//            switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+////                print("JSON: \(json)")
+////                print(response.response?.headers)
+////                print(response.response?.statusCode)
+//
+//                let statusCode = response.response?.statusCode ?? 500
+//                if statusCode == 200 {
+//
+//                    self.isEnd = json["meta"]["is_end"].boolValue
+//
+//                    for item in json["documents"].arrayValue {
+//                        let author = item["author"].stringValue
+//                        let date = item["datetime"].stringValue
+//                        let time = item["play_time"].intValue
+//                        let thumbnail = item["thumbnail"].stringValue
+//                        let title = item["title"].stringValue
+//                        let link = item["url"].stringValue
+//
+//                        let data = Video(author: author, datetime: date, time: time, thumbnail: thumbnail, title: title, link: link)
+//                        self.videoList.append(data)
+//                    }
+//                    print(self.videoList)
+//                    self.videoTableView.reloadData()
+//                }
+//                else {
+//                    print("문제가 발생했어요. 잠시 후 다시 시도해주세요!!")
+//                }
+//
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }

@@ -14,6 +14,8 @@ struct Movie {
     var release: String
 }
 
+
+
 class ViewController: UIViewController {
     
     
@@ -21,6 +23,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var movieTableView: UITableView!
     var movieList: [Movie] = []
+    //codable
+    var result: BoxOffice?
     
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
@@ -29,7 +33,7 @@ class ViewController: UIViewController {
         movieTableView.rowHeight = 60
         movieTableView.dataSource = self
         movieTableView.delegate = self
-        indicatorView.isHidden = true
+        //        indicatorView.isHidden = true
         //callRequest(date: <#String#>)
         
         
@@ -38,59 +42,74 @@ class ViewController: UIViewController {
         indicatorView.isHidden = false
         indicatorView.startAnimating()
         let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=\(APIKey.boxOfficeKey)&targetDt=\(date)"
-        AF.request(url, method: .get).validate().responseJSON { response in
-            switch response.result {
-                
-            case .success(let value):
-                let json = JSON(value)
-                print("JSON: \(json)")
-                
-                //                let name1 = json["boxOfficeResult"]["dailyBoxOfficeList"][0]["movieNm"].stringValue
-                //                let name2 = json["boxOfficeResult"]["dailyBoxOfficeList"][1]["movieNm"].stringValue
-                //                let name3 = json["boxOfficeResult"]["dailyBoxOfficeList"][1]["movieNm"].stringValue
-                //                print(name1, name2, name3)
-                //                self.movieList.append(name1)
-                //                self.movieList.append(name2)
-                //                self.movieList.append(name3)
-                //self.movieList.append(contentsOf: [name1, name2, name3])
+        AF.request(url, method: .get).validate().responseDecodable(of: BoxOffice.self) { response in
+            print(response.value)
+            dump(response.value)
+            self.result = response.value
+            
+            
+            //            var a = result?.boxOfficeResult.dailyBoxOfficeList
+            //            for i in a {
+            //                self.movieLabel.text = i.movieNm
+            //            }
+        }
+        
+        
+        
+        //            .responseJSON { response in
+        //            switch response.result {
+        //
+        //            case .success(let value):
+        //                let json = JSON(value)
+        //                print("JSON: \(json)")
+        //
+        //                //                let name1 = json["boxOfficeResult"]["dailyBoxOfficeList"][0]["movieNm"].stringValue
+        //                //                let name2 = json["boxOfficeResult"]["dailyBoxOfficeList"][1]["movieNm"].stringValue
+        //                //                let name3 = json["boxOfficeResult"]["dailyBoxOfficeList"][1]["movieNm"].stringValue
+        //                //                print(name1, name2, name3)
+        //                //                self.movieList.append(name1)
+        //                //                self.movieList.append(name2)
+        //                //                self.movieList.append(name3)
+        //                //self.movieList.append(contentsOf: [name1, name2, name3])
+        //
+        //
+        //                for item in json["boxOfficeResult"]["dailyBoxOfficeList"].arrayValue {
+        //                    let movieNm = item["movieNm"].stringValue
+        //                    let openDt = item["openDt"].stringValue
+        //                    let data = Movie(title: movieNm, release: openDt)
+        //                    self.movieList.append(data)
+        //                }
+        //                self.indicatorView.stopAnimating()
+        //                self.indicatorView.isHidden = true
+        //                self.movieTableView.reloadData()
+        //
+        //            case .failure(let error):
+        //                print(error)
+        //            }
+        //        }
+        //    }
+        
+        
+    }
+}
+    extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
-                
-                for item in json["boxOfficeResult"]["dailyBoxOfficeList"].arrayValue {
-                    let movieNm = item["movieNm"].stringValue
-                    let openDt = item["openDt"].stringValue
-                    let data = Movie(title: movieNm, release: openDt)
-                    self.movieList.append(data)
-                }
-                self.indicatorView.stopAnimating()
-                self.indicatorView.isHidden = true
-                self.movieTableView.reloadData()
-                
-            case .failure(let error):
-                print(error)
-            }
+
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return result?.boxOfficeResult.dailyBoxOfficeList.count ?? 0 //movieList.count
+        }
+
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell")!
+            cell.textLabel?.text = movieList[indexPath.row].title
+            cell.detailTextLabel?.text = movieList[indexPath.row].release
+            return cell
         }
     }
-    
-    
-}
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieList.count
+    extension ViewController: UISearchBarDelegate {
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            callRequest(date: searchBar.text!)
+        }
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell")!
-        cell.textLabel?.text = movieList[indexPath.row].title
-        cell.detailTextLabel?.text = movieList[indexPath.row].release
-        return cell
-    }
-}
 
-extension ViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        callRequest(date: searchBar.text!)
-    }
-}

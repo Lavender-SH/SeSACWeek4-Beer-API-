@@ -9,6 +9,8 @@ import UIKit
 
 class VideoTableViewCell: UITableViewCell {
     
+    //static let identifier = "VideoTableViewCell"
+    
     
     @IBOutlet weak var thumbnailImageView: UIImageView!
     
