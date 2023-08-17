@@ -9,54 +9,23 @@ import Alamofire
 import SwiftyJSON
 import Kingfisher
 
-// MARK: - Welcome
-struct Video: Codable {
-    let documents: [Document]
-//    let ds, g: [JSONAny]
-//    let m: M
-//    let meta: Meta
-}
 
-// MARK: - Document
-struct Document: Codable {
-    let author: String
-    let datetime: String
-    let playTime: Int
-    let thumbnail: String
-    let title: String
-    let url: String
-
-    enum CodingKeys: String, CodingKey {
-        case author, datetime
-        case playTime = "play_time"
-        case thumbnail, title, url
-    }
-}
-
-//struct Video: Codable {
-//    let author: String
-//    let datetime: String
-//    let time: Int
-//    let thumbnail: String
-//    let title: String
-//    let link: String
-//
 //    var contents: String {
 //
 //            return "\(author) | \(time)초\n\(datetime)"
 //        }
 //    }
-
-
 class VideoViewController: UIViewController {
+    
+    var networkManager = KakaoAPIManager.shared
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var videoTableView: UITableView!
     
-    var videoList: [Video] = []
+    var videoList: [Document] = []
     var page = 1
     var isEnd = false //현재 페이지가 마지막 페이지인지 점검하는 프로퍼티
-    
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         videoTableView.delegate = self
@@ -65,36 +34,16 @@ class VideoViewController: UIViewController {
         videoTableView.prefetchDataSource = self
         
         searchBar.delegate = self
-        callRequest(query: "강아지", page: 1)
+        setupDatas(query: "아이유", page:  1)
     }
-    func callRequest(query: String, page: Int) {
-        
-        let text = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        guard let text else { return }
-        let url = "https://dapi.kakao.com/v2/search/vclip?query=\(text)&size=30&page=\(page)"
-        let header: HTTPHeaders = ["Authorization": "KakaoAK df79323b47aec35f08533de4cce84ee7"]
-        print(url)
-        
-        //        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { response, err in
-        //            if let err = err {
-        //                print(err.localizedDescription)
-        //            }
-        //            guard let value = response.value else { return }
-        //            print("responseDecodable:", value)
-        //
-        //        }
     
-        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { result in
-            if let err = result.error {
-                print(err.localizedDescription)
-            } else {
-                print(result.value)
-            }
+    func setupDatas(query: String, page: Int) {
+        networkManager.callRequest(query: query, page: page) { documents in
+            self.videoList = documents
             
+            }
         }
     }
-    
-}
 
 
 extension VideoViewController: UISearchBarDelegate {
@@ -102,7 +51,7 @@ extension VideoViewController: UISearchBarDelegate {
         page = 1 //새로운 검색어이기 때문에 page를 1로 변경
         videoList.removeAll()
         guard let query = searchBar.text else { return }
-        callRequest(query: query, page: page)
+        //networkManager.callRequest(query: query, page: page, completionHandler: ([Document]) -> Void)
     }
 }
 
@@ -114,11 +63,11 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoTableViewCell") as? VideoTableViewCell else { return UITableViewCell() }
-//        cell.titleLabel.text = videoList[indexPath.row].title
-//        cell.contentLabel.text = videoList[indexPath.row].contents
-//        if let url = URL(string: videoList[indexPath.row].thumbnail) {
-            //cell.thumbnailImageView.kf.setImage(with: url)
-        //}
+        cell.titleLabel.text = videoList[indexPath.row].title
+        cell.contentLabel.text = videoList[indexPath.row].author
+        if let url = URL(string: videoList[indexPath.row].thumbnail) {
+            cell.thumbnailImageView.kf.setImage(with: url)
+        }
         return cell
     }
     //셀이 화면에 보이기 직전에 필요한 리소스를 미리 다운 받는 기능
@@ -131,7 +80,7 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
             //딱딱 맞게 마지막 셀 직전에 실행되는건 아닌 것 처럼 보임
             if videoList.count - 1 == indexPath.row && page < 15 && isEnd == false {
                 page += 1
-                callRequest(query: searchBar.text!, page: page)
+               // networkManager.callRequest(query: searchBar.text!, page: page, completionHandler: (Document) -> Void)
             }
         }
         
@@ -186,3 +135,30 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
 //                print(error)
 //            }
 //        }
+
+//    func callRequest(query: String, page: Int) {
+//
+//        let text = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+//        guard let text else { return }
+//        let url = "https://dapi.kakao.com/v2/search/vclip?query=\(text)&size=30&page=\(page)"
+//        let header: HTTPHeaders = ["Authorization": "KakaoAK df79323b47aec35f08533de4cce84ee7"]
+//        print(url)
+//
+//        //        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { response, err in
+//        //            if let err = err {
+//        //                print(err.localizedDescription)
+//        //            }
+//        //            guard let value = response.value else { return }
+//        //            print("responseDecodable:", value)
+//        //
+//        //        }
+//
+//        AF.request(url, method: .get, headers: header).validate().responseDecodable(of: Video.self) { result in
+//            if let err = result.error {
+//                print(err.localizedDescription)
+//            } else {
+//                print(result.value)
+//            }
+//
+//        }
+//    }
