@@ -10,11 +10,6 @@ import SwiftyJSON
 import Kingfisher
 
 
-//    var contents: String {
-//
-//            return "\(author) | \(time)초\n\(datetime)"
-//        }
-//    }
 class VideoViewController: UIViewController {
     
     var networkManager = KakaoAPIManager.shared
@@ -33,27 +28,31 @@ class VideoViewController: UIViewController {
         videoTableView.rowHeight = 140
         videoTableView.prefetchDataSource = self
         
+        
         searchBar.delegate = self
         setupDatas(query: "아이유", page:  1)
     }
     
     func setupDatas(query: String, page: Int) {
         networkManager.callRequest(query: query, page: page) { documents in
-            self.videoList = documents
-            
+            self.videoList.append(contentsOf: documents)
+            dump(self.videoList)
+            self.videoTableView.reloadData()
             }
         }
     }
 
 
 extension VideoViewController: UISearchBarDelegate {
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         page = 1 //새로운 검색어이기 때문에 page를 1로 변경
         videoList.removeAll()
         guard let query = searchBar.text else { return }
-        //networkManager.callRequest(query: query, page: page, completionHandler: ([Document]) -> Void)
+        setupDatas(query: query, page: page)
+        
     }
 }
+
 
 //UITableViewDataSourcePrefetching: iOS이상 사용 가능한 프로토콜, cellForRowAt 메서드가 호출되기 전에 미리 호출됨
 extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
@@ -64,7 +63,7 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VideoTableViewCell") as? VideoTableViewCell else { return UITableViewCell() }
         cell.titleLabel.text = videoList[indexPath.row].title
-        cell.contentLabel.text = videoList[indexPath.row].author
+        cell.contentLabel.text = videoList[indexPath.row].contents
         if let url = URL(string: videoList[indexPath.row].thumbnail) {
             cell.thumbnailImageView.kf.setImage(with: url)
         }
@@ -80,7 +79,10 @@ extension VideoViewController: UITableViewDelegate, UITableViewDataSource, UITab
             //딱딱 맞게 마지막 셀 직전에 실행되는건 아닌 것 처럼 보임
             if videoList.count - 1 == indexPath.row && page < 15 && isEnd == false {
                 page += 1
-               // networkManager.callRequest(query: searchBar.text!, page: page, completionHandler: (Document) -> Void)
+                //callRequest(query: query, page: page)
+                //networkManager.callRequest(query: searchBar.text!, page: page)
+                setupDatas(query: searchBar.text!, page: page)
+                
             }
         }
         

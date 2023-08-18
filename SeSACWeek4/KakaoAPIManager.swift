@@ -24,6 +24,10 @@ struct Document: Codable {
     let thumbnail: String
     let title: String
     let url: String
+    
+    var contents: String {
+        return "\(author) | \(playTime)초\n\(datetime)"
+    }
 
     enum CodingKeys: String, CodingKey {
         case author, datetime
@@ -49,7 +53,7 @@ class KakaoAPIManager {
             switch response.result {
             case .success(let value):
                 completionHandler(value.documents)
-                
+               // print(value)
             case .failure(let error):
                 print(error)
             }
